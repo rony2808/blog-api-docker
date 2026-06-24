@@ -16,6 +16,25 @@ jobs:
       - name: Install dependencies
         working-directory: flask
         run: pip install -r requirements.txt
+
       - name: Run test
         working-directory: flask
         run: pytest -v
+
+      - name: Connection to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: build Docker image flask
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-api-flask:latest ./flask
+
+      - name: build Docker image nginx
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-api-nginx:latest ./nginx
+
+      - name: push docker image flask
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-api-flask:latest
+
+      - name: push docker image nginx
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-api-nginx:latest
