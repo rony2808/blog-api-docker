@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:                          
+    runs-on: ubuntu-latest        
+    steps:                        
+      - name: Get the code        
+        uses: actions/checkout@v5
+      - name: Install python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        working-directory: flask
+        run: pip install -r requirements.txt
+      - name: Run test
+        working-directory: flask
+        run: pytest -v
