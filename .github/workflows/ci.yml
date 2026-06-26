@@ -41,7 +41,7 @@ jobs:
         working-directory: flask
         run: pip install -r requirements.txt
       - name: Initialize database
-        run: mysql -h 127.0.0.1 -u your_user -pyour_password your_db < init.sql
+        run: mysql -h 127.0.0.1 -u your_user -pyour_password your_db < $GITHUB_WORKSPACE/init.sql
       - name: Run test
         working-directory: flask
         env:

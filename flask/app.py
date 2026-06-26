@@ -49,7 +49,7 @@ def get_articles():
             {"id": row[0], "title": row[1], "content": row[2], "created_at": str(row[3])}
             for row in rows
         ]
-        redis_client.set('articles', json.dumps(articles), ex=60)
+        r.setex('articles', 60, json.dumps(articles))
         return jsonify({"source": "database", "articles": articles})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
